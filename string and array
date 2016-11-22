@@ -1,0 +1,22 @@
+"Use recursion to achieve the reversal of the string"
+"the code is from the network”
+
+
+#  c/c++
+void reverse(const char * const str){
+  if(str[0]=='\0') return;
+  else{
+    reverse(&str[1]);
+    putchar(str[0]);
+  }
+}
+
+
+#java
+
+public static String reverseString(String s){
+        if(s.isEmpty()) return s;
+        return reverseString(s.substring(1))+s.charAt(0);
+   }
+   
+
