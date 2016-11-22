@@ -20,3 +20,24 @@ public static String reverseString(String s){
    }
    
 
+
+“rotate an array of n elements to the right by k steps ”
+For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
+
+we just need to rotate gcd(n,k) elemets; 
+
+void rightmove( ){
+	int x=getgcd(n,k);
+	for(int i=0;i<x;i++){
+ 		int p=i;
+    int j=(i+k)%n;
+    int temp=a[i];
+		while(j!=i){
+			a[p]=temp;
+      temp=a[j];
+      a[j]=a[p];
+			p=j; j=(p+k)%n;
+    }
+    A[i]=temp;
+  }
+}
