@@ -2,7 +2,7 @@
 #define WTGRAPH_H_INCLUDED
 #include<iostream>
 using namespace std;
-const int 	defMaxGraphSize = 100,
+const int defMaxGraphSize = 100,
 vertexLabelLength = 11,
 infiniteEdgeWt = INT_MAX;
 
