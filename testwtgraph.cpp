@@ -29,6 +29,15 @@ void InitWtGraph( WtGraph &G, int maxNumber )
         for(int j=0;j<maxNumber;j++)
             G.adjMatrix[i][j]=infiniteEdgeWt;
     }
+     G.pathMaxtrix=new int*[maxNumber];
+    for(int i=0;i<maxNumber;i++)
+        G.pathMaxtrix[i]=new int[maxNumber];
+    for(int i=0;i<maxNumber;i++)
+    {
+        for(int j=0;j<maxNumber;j++)
+            G.pathMaxtrix[i][j]=infiniteEdgeWt;
+    }
+
 }
 void DeWtGraph( WtGraph &G )
 {
@@ -69,6 +78,8 @@ void insertEdge( WtGraph &G, char *v1, char *v2, int wt )
     a=getIndex(G,v1);
     b=getIndex(G,v2);
     G.adjMatrix[a][b]=G.adjMatrix[b][a]=wt;
+    G.pathMaxtrix[a][b]=G.pathMaxtrix[b][a]=wt;
+
 }
 bool retrieveVertex( WtGraph G, char *v, Vertex &vData )
 {
@@ -105,6 +116,7 @@ void removeVertex( WtGraph &G, char *v)
     {
         G.adjMatrix[i][a]=infiniteEdgeWt;
         G.adjMatrix[a][i]=infiniteEdgeWt;
+
     }
 }
 void removeEdge( WtGraph &G, char *v1, char *v2 )
@@ -112,6 +124,7 @@ void removeEdge( WtGraph &G, char *v1, char *v2 )
     int a=getIndex(G,v1);
     int b=getIndex(G,v2);
     G.adjMatrix[a][b]=G.adjMatrix[b][a]=infiniteEdgeWt;
+    G.pathMaxtrix[a][b]=G.pathMaxtrix[b][a]=infiniteEdgeWt;
 }
 void clear( WtGraph &G )
 {
@@ -121,6 +134,7 @@ void clear( WtGraph &G )
             G.adjMatrix[i][j]=infiniteEdgeWt;
     }
     G.verteist=NULL;
+    G.size=0;
 }
 bool isEmpty(WtGraph G)
 {
@@ -148,13 +162,90 @@ void showStructure(WtGraph G)
         {
             printf("%s,",G.verteist[i].label);
         }
-        printf("%s}",G.verteist[G.size-1].label);
+        printf("%s}\n",G.verteist[G.size-1].label);
     for(int i=0;i<G.size;i++)
     {
         for(int j=0;j<G.size;j++)
         {
-            printf("%d ",G.adjMatrix[i][j]);
+            if(G.adjMatrix[i][j]==infiniteEdgeWt)
+                printf("\t∞");
+            else printf("\t%d",G.adjMatrix[i][j]);
         }
         printf("\n");
     }
+    cout<<endl;
+    for(int i=0;i<G.size;i++)
+    {
+        for(int j=0;j<G.size;j++)
+        {
+            if(G.pathMaxtrix[i][j]==infiniteEdgeWt)
+                printf("\t∞");
+            else printf("\t%d",G.pathMaxtrix[i][j]);
+        }
+        printf("\n");
+    }
+    cout<<endl;
+    cout<<"color:{";
+    for(int i=0;i<G.size-1;i++)
+    {
+        cout<<G.verteist[i].color<<",";
+    }
+    cout<<G.verteist[G.size-1].color<<"}"<<endl;
+}
+void computePaths(WtGraph &G)
+{
+    for(int i=0;i<G.size;i++)
+    {
+        for(int j=0;j<G.size;j++)
+        {
+            for(int k=0;k<G.size;k++)
+            {
+                if(i==j)
+                {
+                    G.pathMaxtrix[i][j]=0;
+                    continue;
+                }
+                if(G.adjMatrix[i][j]>(G.adjMatrix[i][k]+G.adjMatrix[k][j]))
+                {
+                    G.pathMaxtrix[i][j]=G.adjMatrix[i][k]+G.adjMatrix[k][j];
+                }
+            }
+        }
+    }
+
+}
+
+bool hasProperColoring(WtGraph G)
+{
+    for(int i=0;i<G.size;i++)
+    {
+        for(int j=0;j<G.size;j++)
+        {
+            if(G.adjMatrix[i][j]!=infiniteEdgeWt&&G.verteist[i].color==G.verteist[j].color)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+bool areAllEven(WtGraph G)
+{
+    for(int i=0;i<G.size;i++)
+    {
+        int cnt=0;
+        for(int j=0;j<G.size;j++)
+        {
+            if(i!=j&&G.adjMatrix[i][j]!=infiniteEdgeWt)
+            {
+                cnt++;
+            }
+
+        }
+         if(cnt%2)
+            {
+                return false;
+            }
+    }
+    return true;
 }
