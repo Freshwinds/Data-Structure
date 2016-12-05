@@ -10,7 +10,12 @@ void menu()
     cout<<"!v w:delete the edge between v and w"<<endl;
     cout<<"E:judge whether the graph is empty"<<endl;
     cout<<"F:judge whether the graph is full"<<endl;
+    cout<<"PM:input paths"<<endl;
     cout<<"C:clear the graph"<<endl;
+    cout<<"R:color the vertex"<<endl;
+    cout<<"H:judge whether the color of vertex is proper"<<endl;
+    cout<<"D:judge whether the answer is always yes"<<endl;
+    cout<<"S:show structure"<<endl;
     cout<<"Q:quit "<<endl;
     cout<<"***************************************************"<<endl;
 
@@ -18,12 +23,14 @@ void menu()
 int main()
 {
     WtGraph G;
+    //cout<<2<<endl;
     InitWtGraph(G,defMaxGraphSize);
     menu();
+    //cout<<1<<endl;
     char *order=new char[defMaxGraphSize];
     while(1)
     {
-        cout<<"please input order:"
+        cout<<"please input order:";
         gets(order);
 
         char *v=new char[defMaxGraphSize];
@@ -102,6 +109,46 @@ int main()
         {
             printf("Thank you for using\n");
             break;
+        }
+        else if(order[0]=='S')
+        {
+            showStructure(G);
+
+        }
+        else if(order[0]=='P')
+        {
+            computePaths(G);
+        }
+        else if(order[0]=='R')
+        {
+            for(int i=0;i<G.size;i++)
+            {
+                cout<<"please input "<<i<<"th vertex point color:";
+                cin>>G.verteist[i].color;
+            }
+            getchar();
+        }
+        else if(order[0]=='H')
+        {
+            if(hasProperColoring(G))
+            {
+                cout<<"the color is proper"<<endl;
+            }
+            else
+            {
+                cout<<"the color is not proper"<<endl;
+            }
+        }
+        else if(order[0]=='D')
+        {
+            if(areAllEven(G))
+            {
+                cout<<"all degree is even number"<<endl;
+            }
+            else
+            {
+                cout<<"some degree is odd number"<<endl;
+            }
         }
         else
         {
