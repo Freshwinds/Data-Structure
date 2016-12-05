@@ -5,7 +5,6 @@ using namespace std;
 const int defMaxGraphSize = 100,
 vertexLabelLength = 11,
 infiniteEdgeWt = INT_MAX;
-
 struct Vertex {
 	char label[vertexLabelLength];
 };
